@@ -1,9 +1,13 @@
 import { useState } from "react"
 
-import Navbar from "./components/NavBar"
-import Hero from "./components/Hero"
-import Filter from "./components/Filter"
-import Listing from "./components/Listing"
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom"
+
+import Home from "./pages/Home"
+import ApartmentDetails from "./pages/ApartmentDetails"
 
 const apartments = [
   {
@@ -12,7 +16,7 @@ const apartments = [
     price: "250 TND",
     location: "Hay El Ons",
     distance: "5",
-    gender: "Male",
+    gender: "Mixed",
     type: "S+0",
     image:
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85"
@@ -45,7 +49,7 @@ function App() {
   const [distanceFilter, setDistanceFilter] = useState("")
   const [genderFilter, setGenderFilter] = useState("")
   const [typeFilter, setTypeFilter] = useState("")
-  
+
 
   const filteredApartments = apartments.filter((apt) => {
     return (
@@ -57,17 +61,35 @@ function App() {
 
   return (
     <div>
-      <Navbar />
 
-      <Hero />
+      <BrowserRouter>
 
-      <Filter
-        setDistanceFilter={setDistanceFilter}
-        setGenderFilter={setGenderFilter}
-        setTypeFilter={setTypeFilter}
-      />
+        <Routes>
 
-      <Listing apartments={filteredApartments} />
+          {/* HOME PAGE */}
+          <Route
+            path="/"
+            element={
+              <Home
+                apartments={apartments}
+                filteredApartments={filteredApartments}
+                setDistanceFilter={setDistanceFilter}
+                setGenderFilter={setGenderFilter}
+                setTypeFilter={setTypeFilter}
+              />
+            }
+          />
+
+          {/* DETAILS PAGE */}
+          <Route
+            path="/apartment/:id"
+            element={<ApartmentDetails />}
+          />
+
+        </Routes>
+
+      </BrowserRouter>
+
     </div>
   )
 }
