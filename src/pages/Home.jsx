@@ -8,16 +8,11 @@ function Home({
   setDistanceFilter,
   setGenderFilter,
   setTypeFilter,
-  filteredApartments,
-  darkMode,
-  setDarkMode
+  filteredApartments
 }) {
   return (
     <>
-      <Navbar
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+      <Navbar/>
 
       <Hero />
 
