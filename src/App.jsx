@@ -83,7 +83,7 @@ function App() {
           {/* DETAILS PAGE */}
           <Route
             path="/apartment/:id"
-            element={<ApartmentDetails />}
+            element={<ApartmentDetails apartments={apartments} />}
           />
 
         </Routes>
