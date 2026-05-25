@@ -1,4 +1,9 @@
-import { useParams, Link } from "react-router-dom"
+import { useState } from "react"
+
+import {
+  useParams,
+  Link
+} from "react-router-dom"
 
 function ApartmentDetails({ apartments }) {
 
@@ -7,6 +12,9 @@ function ApartmentDetails({ apartments }) {
   const apartment = apartments.find(
     (apt) => apt.id === Number(id)
   )
+  const [selectedImage, setSelectedImage] = useState(
+  apartment.images[0]
+)
 
   if (!apartment) {
     return (
@@ -35,10 +43,34 @@ function ApartmentDetails({ apartments }) {
 
           {/* IMAGE */}
           <img
-            src={apartment.image}
+            src={selectedImage}
             alt={apartment.title}
             className="w-full h-[450px] object-cover rounded-3xl shadow-lg"
           />
+          {/* THUMBNAILS */}
+          <div className="flex gap-4 mt-4 overflow-x-auto">
+
+            {apartment.images.map((img, index) => (
+
+              <img
+                key={index}
+                src={img}
+                alt="Apartment"
+                onClick={() => setSelectedImage(img)}
+                className={`
+                  w-28 h-20 object-cover rounded-xl cursor-pointer border-4 transition
+
+                ${
+                  selectedImage === img
+                  ? "border-blue-600"
+                  : "border-transparent"
+        }
+      `}
+    />
+
+  ))}
+
+</div>
 
           {/* INFO */}
           <div className="mt-8">
@@ -48,7 +80,7 @@ function ApartmentDetails({ apartments }) {
             </h1>
 
             <p className="text-gray-600 text-lg mb-6">
-              📍 {apartment.location}
+               {apartment.location}
             </p>
 
             {/* BADGES */}
@@ -83,6 +115,29 @@ function ApartmentDetails({ apartments }) {
               </p>
 
             </div>
+            {/* AMENITIES */}
+            <div className="bg-white rounded-3xl shadow p-8 mt-8">
+
+              <h2 className="text-2xl font-bold mb-6">
+                  Amenities
+              </h2>
+
+              <div className="flex flex-wrap gap-4">
+
+                {apartment.amenities.map((item, index) => (
+
+                <div
+                  key={index}
+                  className="bg-gray-100 px-5 py-3 rounded-2xl font-medium"
+                  >
+                 {item}
+      </div>
+
+    ))}
+
+  </div>
+
+</div>
 
           </div>
 
