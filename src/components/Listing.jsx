@@ -19,7 +19,7 @@ function Listing({ apartments }) {
             <div className="relative">
 
               <img
-                src={apt.image}
+                src={apt.images[0]}
                 alt={apt.title}
                 className="h-56 w-full object-cover"
               />
