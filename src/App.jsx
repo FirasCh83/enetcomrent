@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import {
   BrowserRouter,
@@ -8,12 +8,22 @@ import {
 
 import Home from "./pages/Home"
 import ApartmentDetails from "./pages/ApartmentDetails"
-import apartments from "./data/apartments"
 
 function App() {
   const [distanceFilter, setDistanceFilter] = useState("")
   const [genderFilter, setGenderFilter] = useState("")
   const [typeFilter, setTypeFilter] = useState("")
+  const [apartments, setApartments] = useState([])
+
+  useEffect(() => {
+
+  fetch("http://localhost:5000/apartments")
+    .then((res) => res.json())
+    .then((data) => {
+      setApartments(data)
+    })
+
+}, [])
 
 
   const filteredApartments = apartments.filter((apt) => {
