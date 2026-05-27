@@ -11,7 +11,7 @@ function Listing({ apartments }) {
 
         {apartments.map((apt) => (
           <div
-            key={apt.id}
+            key={apt._id}
             className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-2 transition duration-300"
           >
 
@@ -19,7 +19,7 @@ function Listing({ apartments }) {
             <div className="relative">
 
               <img
-                src={apt.images[0]}
+                src={apt.image}
                 alt={apt.title}
                 className="h-56 w-full object-cover"
               />
@@ -64,7 +64,7 @@ function Listing({ apartments }) {
               </div>
 
               {/* BUTTON */}
-              <Link to={`/apartment/${apt.id}`}>
+              <Link to={`/apartment/${apt._id}`}>
 
               <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
                 View Details

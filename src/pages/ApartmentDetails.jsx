@@ -10,11 +10,9 @@ function ApartmentDetails({ apartments }) {
   const { id } = useParams()
 
   const apartment = apartments.find(
-    (apt) => apt.id === Number(id)
+    (apt) => apt._id === id
   )
-  const [selectedImage, setSelectedImage] = useState(
-  apartment.images[0]
-)
+  const [selectedImage, setSelectedImage] = useState("")
 
   if (!apartment) {
     return (
@@ -23,6 +21,10 @@ function ApartmentDetails({ apartments }) {
       </div>
     )
   }
+  
+  if (!selectedImage) {
+  setSelectedImage(apartment.image)
+}
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
@@ -50,25 +52,14 @@ function ApartmentDetails({ apartments }) {
           {/* THUMBNAILS */}
           <div className="flex gap-4 mt-4 overflow-x-auto">
 
-            {apartment.images.map((img, index) => (
+             <img
+    src={apartment.image}
+    alt="Apartment"
+    onClick={() => setSelectedImage(apartment.image)}
+    className="w-28 h-20 object-cover rounded-xl border-4 border-blue-600 cursor-pointer"
+  />
 
-              <img
-                key={index}
-                src={img}
-                alt="Apartment"
-                onClick={() => setSelectedImage(img)}
-                className={`
-                  w-28 h-20 object-cover rounded-xl cursor-pointer border-4 transition
 
-                ${
-                  selectedImage === img
-                  ? "border-blue-600"
-                  : "border-transparent"
-        }
-      `}
-    />
-
-  ))}
 
 </div>
 
@@ -95,7 +86,7 @@ function ApartmentDetails({ apartments }) {
               </div>
 
               <div className="bg-white shadow px-4 py-2 rounded-xl">
-                 {apartment.type}
+                 {apartment.rooms}
               </div>
 
             </div>
@@ -124,7 +115,7 @@ function ApartmentDetails({ apartments }) {
 
               <div className="flex flex-wrap gap-4">
 
-                {apartment.amenities.map((item, index) => (
+                {["WiFi", "Kitchen", "Desk"].map((item, index) => (
 
                 <div
                   key={index}
@@ -175,7 +166,7 @@ function ApartmentDetails({ apartments }) {
 
               <div className="flex justify-between">
                 <span>Type</span>
-                <span>{apartment.type}</span>
+                <span>{apartment.rooms}</span>
               </div>
 
             </div>
