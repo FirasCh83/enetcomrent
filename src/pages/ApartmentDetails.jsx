@@ -78,7 +78,7 @@ function ApartmentDetails({ apartments }) {
             <div className="flex flex-wrap gap-4 mb-8">
 
               <div className="bg-white shadow px-4 py-2 rounded-xl">
-                 {apartment.distance} min from university
+                 {apartment.distance} min from ENET'Com
               </div>
 
               <div className="bg-white shadow px-4 py-2 rounded-xl">
@@ -99,10 +99,7 @@ function ApartmentDetails({ apartments }) {
               </h2>
 
               <p className="text-gray-700 leading-8">
-                Comfortable student apartment located in Hay El Ons,
-                close to ENET'Com, ISIMS, ISGI, and IIT.
-                Includes modern furniture, calm environment,
-                and easy transportation access.
+                {apartment.description}
               </p>
 
             </div>
@@ -144,7 +141,7 @@ function ApartmentDetails({ apartments }) {
             </p>
 
             <h2 className="text-4xl font-bold mb-6">
-              {apartment.price}
+              {apartment.price} DT/month
             </h2>
 
             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold text-lg transition">
@@ -156,7 +153,7 @@ function ApartmentDetails({ apartments }) {
 
               <div className="flex justify-between">
                 <span>Distance</span>
-                <span>{apartment.distance} min</span>
+                <span>{apartment.distance} min from ENET'Com</span>
               </div>
 
               <div className="flex justify-between">

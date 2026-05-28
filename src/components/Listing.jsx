@@ -41,7 +41,7 @@ function Listing({ apartments }) {
                 </h3>
 
                 <p className="text-blue-600 font-bold">
-                  {apt.price}
+                  {apt.price} DT/month
                 </p>
 
               </div>
@@ -54,7 +54,7 @@ function Listing({ apartments }) {
               <div className="flex gap-3 mt-5">
 
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                  {apt.distance} min
+                  {apt.distance} min from ENET'Com
                 </span>
 
                 <span className="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 function Navbar() {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-200">
@@ -25,9 +26,12 @@ function Navbar() {
         </button>
 
         {/* Owner Space */}
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow transition">
-          Espace Propriétaire
-        </button>
+<Link
+  to="/owner-dashboard"
+  className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow transition"
+>
+  Espace Propriétaire
+</Link>
         
 
 </div>

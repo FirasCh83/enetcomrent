@@ -8,6 +8,8 @@ import {
 
 import Home from "./pages/Home"
 import ApartmentDetails from "./pages/ApartmentDetails"
+import OwnerDashboard from "./pages/OwnerDashboard"
+import AddApartment from "./pages/AddApartment"
 
 function App() {
   const [distanceFilter, setDistanceFilter] = useState("")
@@ -59,6 +61,14 @@ function App() {
           <Route
             path="/apartment/:id"
             element={<ApartmentDetails apartments={apartments} />}
+          />
+          <Route
+            path="/owner-dashboard"
+            element={<OwnerDashboard />}
+          />
+          <Route
+            path="/add-apartment"
+            element={<AddApartment />}
           />
 
         </Routes>

@@ -3,6 +3,7 @@ const Apartment = require("./models/Apartment")
 const express = require("express")
 const cors = require("cors")
 
+
 const mongoose = require("mongoose")
 
 const app = express()
@@ -18,6 +19,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 app.use(cors())
+
+app.use(express.json())
 
 app.get("/", (req, res) => {
   res.send("Enetcomrent backend is running 😄")
@@ -40,19 +43,52 @@ app.get("/create", async (req, res) => {
 
     price: "450 DT/month",
 
-    distance: "5 min from ENET'Com",
+    distance: "5",
 
     gender: "Male",
 
     rooms: "S+1",
 
-    image: "https://via.placeholder.com/300"
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
+
+    description: "Modern studio apartment available for rent in a prime location."
 
   })
 
   await newApartment.save()
 
   res.send("Apartment saved 😄")
+
+})
+
+app.post("/apartments", async (req, res) => {
+
+  const apartment = new Apartment(req.body)
+
+  await apartment.save()
+
+  res.json(apartment)
+
+})
+
+app.delete("/apartments/:id", async (req, res) => {
+  console.log(req.params.id)
+
+  try {
+
+    await Apartment.findByIdAndDelete(req.params.id)
+
+    res.json({
+      message: "Apartment deleted successfully 😄"
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: "Failed to delete apartment"
+    })
+
+  }
 
 })
 
