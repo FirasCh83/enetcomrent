@@ -92,6 +92,48 @@ app.delete("/apartments/:id", async (req, res) => {
 
 })
 
+app.put("/apartments/:id", async (req, res) => {
+
+  try {
+
+    const updatedApartment =
+      await Apartment.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      )
+
+    res.json(updatedApartment)
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: "Failed to update apartment"
+    })
+
+  }
+
+})
+
+app.get("/apartments/:id", async (req, res) => {
+
+  try {
+
+    const apartment =
+      await Apartment.findById(req.params.id)
+
+    res.json(apartment)
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: "Apartment not found"
+    })
+
+  }
+
+})
+
 app.listen(5000, () => {
   console.log("Server running on port 5000")
 })

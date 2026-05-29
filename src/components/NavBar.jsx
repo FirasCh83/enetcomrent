@@ -21,13 +21,16 @@ function Navbar() {
         <div className="flex items-center gap-4">
 
         {/* Student Login */}
-        <button className="hidden sm:block text-gray-700 hover:text-blue-600 font-medium transition">
-          Connexion Étudiant
-        </button>
+        <Link
+        to="/student-login"
+        className="bg-white border border-gray-300 hover:bg-gray-100 px-5 py-2.5 rounded-xl font-semibold transition"
+        >
+        Connexion Étudiant
+        </Link>
 
         {/* Owner Space */}
 <Link
-  to="/owner-dashboard"
+  to="/owner-signup"
   className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow transition"
 >
   Espace Propriétaire

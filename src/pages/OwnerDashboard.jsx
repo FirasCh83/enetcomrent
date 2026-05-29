@@ -92,9 +92,12 @@ const handleDelete = async (id) => {
 
         <div className="flex gap-4">
 
-          <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold transition">
+          <Link
+                  to={`/edit-apartment/${apt._id}`}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold transition text-center"
+                  >
             Edit
-          </button>
+          </Link>
 
           <button
   onClick={() => handleDelete(apt._id)}
