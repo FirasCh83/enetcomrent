@@ -1,7 +1,10 @@
 require("dotenv").config()
+const bcrypt = require("bcryptjs")
 const Apartment = require("./models/Apartment")
 const express = require("express")
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
+
 
 
 const mongoose = require("mongoose")
@@ -133,6 +136,84 @@ app.get("/apartments/:id", async (req, res) => {
   }
 
 })
+
+app.post("/owner/signup", async (req, res) => {
+
+  try {
+
+    const {
+      name,
+      email,
+      password
+    } = req.body
+
+    // CHECK IF EMAIL EXISTS
+    const existingUser =
+      await User.findOne({ email })
+
+    if (existingUser) {
+
+      return res.status(400).json({
+        error: "Email already exists"
+      })
+
+    }
+    if (!name || !email || !password) {
+
+      return res.status(400).json({
+        error: "All fields are required"
+      })
+
+    }
+    if (password.length < 6) {
+
+      return res.status(400).json({
+        error: "Password must be at least 6 characters"
+      })
+
+    }
+    if (!email.includes("@")) {
+
+      return res.status(400).json({
+        error: "Invalid email"
+      })}
+
+
+    // HASH PASSWORD
+    const hashedPassword =
+      await bcrypt.hash(password, 10)
+
+    // CREATE USER
+    const newUser = new User({
+
+      name,
+      email,
+
+      password: hashedPassword,
+
+      role: "owner"
+
+    })
+
+    await newUser.save()
+
+    res.status(201).json({
+      message: "Owner account created 😄"
+    })
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+      error: "Server error"
+    })
+
+  }
+
+})
+
+const User = require("./models/User")
 
 app.listen(5000, () => {
   console.log("Server running on port 5000")

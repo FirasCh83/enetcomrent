@@ -1,6 +1,57 @@
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 function OwnerSignup() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e) => {
+
+  e.preventDefault()
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:5000/owner/signup",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      }
+    )
+
+    const data = await response.json()
+
+console.log(data)
+
+if (!response.ok) {
+
+  alert(data.error)
+
+  return
+
+}
+
+alert("Account created 😄")
+
+  } catch (error) {
+
+    console.log(error)
+
+  }
+
+}
+
+
 
   return (
 
@@ -16,24 +67,33 @@ function OwnerSignup() {
           Join Enetcomrent today 😄
         </p>
 
-        <form className="space-y-6">
+        <form
+           onSubmit={handleSubmit}
+           className="space-y-6"
+          >
 
           <input
             type="text"
             placeholder="Full name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full p-4 rounded-2xl border"
           />
 
           <input
             type="email"
             placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full p-4 rounded-2xl border"
           />
 
           <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-4 rounded-2xl border"
+           type="password"
+           placeholder="Password"
+           value={password}
+           onChange={(e) => setPassword(e.target.value)}
+           className="w-full p-4 rounded-2xl border"
           />
 
           <button
