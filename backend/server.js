@@ -4,6 +4,7 @@ const Apartment = require("./models/Apartment")
 const express = require("express")
 const cors = require("cors")
 const jwt = require("jsonwebtoken")
+const verifyToken = require("./middleware/verifyToken")
 
 
 
@@ -28,11 +29,22 @@ app.use(express.json())
 app.get("/", (req, res) => {
   res.send("Enetcomrent backend is running 😄")
 })
-app.get("/apartments", async (req, res) => {
 
-  const apartments = await Apartment.find()
 
-  res.json(apartments)
+app.post(
+  "/apartments",
+  verifyToken,
+  async (req, res) => {
+
+  const apartment = new Apartment({
+
+  ...req.body,
+
+  ownerId: req.user.id
+
+})
+
+  res.json(apartment)
 
 })
 
@@ -214,6 +226,96 @@ app.post("/owner/signup", async (req, res) => {
 })
 
 const User = require("./models/User")
+
+app.post("/owner/login", async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body
+
+    // FIND USER
+    const user = await User.findOne({ email })
+
+    if (!user) {
+
+      return res.status(400).json({
+        error: "User not found"
+      })
+
+    }
+
+    // CHECK PASSWORD
+    const isMatch =
+      await bcrypt.compare(
+        password,
+        user.password
+      )
+
+    if (!isMatch) {
+
+      return res.status(400).json({
+        error: "Invalid password"
+      })
+
+    }
+
+    // GENERATE TOKEN
+    const token = jwt.sign(
+
+      {
+        id: user._id,
+        role: user.role
+      },
+
+      process.env.JWT_SECRET,
+
+      {
+        expiresIn: "7d"
+      }
+
+    )
+
+    res.json({
+
+      message: "Login successful 😄",
+
+      token,
+
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+
+    })
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+      error: "Server error"
+    })
+
+  }
+
+})
+
+app.get(
+  "/owner/apartments",
+  verifyToken,
+  async (req, res) => {
+
+    const apartments =
+      await Apartment.find({
+        ownerId: req.user.id
+      })
+
+    res.json(apartments)
+
+  }
+)
 
 app.listen(5000, () => {
   console.log("Server running on port 5000")

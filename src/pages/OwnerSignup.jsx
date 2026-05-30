@@ -109,7 +109,7 @@ alert("Account created 😄")
           Already have an account?{" "}
 
           <Link
-            to="/login"
+            to="/owner-login"
             className="text-blue-600 font-semibold"
           >
             Login

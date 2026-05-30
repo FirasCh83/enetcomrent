@@ -1,6 +1,59 @@
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 function OwnerLogin() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+
+  const handleSubmit = async (e) => {
+
+  e.preventDefault()
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:5000/owner/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    console.log(data)
+
+    if (!response.ok) {
+
+      alert(data.error)
+
+      return
+
+    }
+
+    localStorage.setItem(
+      "token",
+      data.token
+    )
+
+    alert("Login successful 😄")
+
+  } catch (error) {
+
+    console.log(error)
+
+  }
+
+}
 
   return (
 
@@ -16,17 +69,24 @@ function OwnerLogin() {
           Login to your account
         </p>
 
-        <form className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          >
 
           <input
             type="email"
             placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full p-4 rounded-2xl border"
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full p-4 rounded-2xl border"
           />
 
@@ -43,7 +103,7 @@ function OwnerLogin() {
           Don't have an account?{" "}
 
           <Link
-            to="/signup"
+            to="/owner-signup"
             className="text-blue-600 font-semibold"
           >
             Sign Up
