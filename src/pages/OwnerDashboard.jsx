@@ -5,7 +5,17 @@ function OwnerDashboard() {
   const [apartments, setApartments] = useState([])
   useEffect(() => {
 
-  fetch("http://localhost:5000/apartments")
+  const token =
+    localStorage.getItem("token")
+
+  fetch(
+    "http://localhost:5000/owner/apartments",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  )
     .then((res) => res.json())
     .then((data) => {
       setApartments(data)

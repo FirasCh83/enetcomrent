@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom"
+import {
+  Link,
+  useNavigate
+} from "react-router-dom"
 import { useState } from "react"
 
 function OwnerLogin() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -46,6 +50,7 @@ function OwnerLogin() {
     )
 
     alert("Login successful 😄")
+    navigate("/owner-dashboard")
 
   } catch (error) {
 

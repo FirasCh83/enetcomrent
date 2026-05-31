@@ -43,7 +43,7 @@ app.post(
   ownerId: req.user.id
 
 })
-
+  await apartment.save()
   res.json(apartment)
 
 })
@@ -76,15 +76,6 @@ app.get("/create", async (req, res) => {
 
 })
 
-app.post("/apartments", async (req, res) => {
-
-  const apartment = new Apartment(req.body)
-
-  await apartment.save()
-
-  res.json(apartment)
-
-})
 
 app.delete("/apartments/:id", async (req, res) => {
   console.log(req.params.id)
