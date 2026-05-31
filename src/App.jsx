@@ -15,6 +15,7 @@ import StudentLogin from "./pages/StudentLogin"
 import StudentSignup from "./pages/StudentSignup"
 import OwnerLogin from "./pages/OwnerLogin"
 import OwnerSignup from "./pages/OwnerSignup"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
   const [distanceFilter, setDistanceFilter] = useState("")
@@ -68,17 +69,29 @@ function App() {
             element={<ApartmentDetails apartments={apartments} />}
           />
           <Route
-            path="/owner-dashboard"
-            element={<OwnerDashboard />}
+          path="/owner-dashboard"
+          element={
+          <ProtectedRoute>
+            <OwnerDashboard />
+          </ProtectedRoute>
+            }
           />
           <Route
-            path="/add-apartment"
-            element={<AddApartment />}
+          path="/add-apartment"
+          element={
+          <ProtectedRoute>
+          <AddApartment />
+          </ProtectedRoute>
+            }
           />
           <Route
-            path="/edit-apartment/:id"
-            element={<EditApartment />}
-          />
+        path="/edit-apartment/:id"
+        element={
+        <ProtectedRoute>
+          <EditApartment />
+        </ProtectedRoute>
+        }
+        />
         <Route
         path="/student-login"
         element={<StudentLogin />}

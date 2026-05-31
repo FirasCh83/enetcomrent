@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom"
+import {
+  Link,
+  useNavigate
+} from "react-router-dom"
 import { useEffect, useState } from "react"
 
 function OwnerDashboard() {
   const [apartments, setApartments] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
 
   const token =
@@ -22,6 +26,16 @@ function OwnerDashboard() {
     })
 
 }, [])
+
+const handleLogout = () => {
+
+  localStorage.removeItem("token")
+
+  localStorage.removeItem("user")
+
+  navigate("/owner-login")
+
+}
 
 const handleDelete = async (id) => {
 
@@ -45,6 +59,10 @@ const handleDelete = async (id) => {
   }
 
 }
+const user =
+  JSON.parse(
+    localStorage.getItem("user")
+  )
   return (
     <div className="min-h-screen bg-gray-100 p-10">
 
@@ -55,6 +73,22 @@ const handleDelete = async (id) => {
           <h1 className="text-4xl font-bold">
             Owner Dashboard
           </h1>
+          <div className="mb-8">
+
+  <h1 className="text-4xl font-bold">
+
+    Welcome back,
+    {user?.name} 😄
+
+  </h1>
+
+  <p className="text-gray-500 mt-2">
+
+    Manage your apartments here.
+
+  </p>
+
+</div>
 
           <p className="text-gray-600 mt-2">
             Manage your apartments in Hay El Ons
@@ -67,6 +101,19 @@ const handleDelete = async (id) => {
         >
           + Add Apartment
         </Link>
+        <button
+  onClick={handleLogout}
+  className="
+    bg-red-500
+    hover:bg-red-600
+    text-white
+    px-5
+    py-2
+    rounded-xl
+  "
+          >
+        Logout
+      </button>
 
       </div>
 
