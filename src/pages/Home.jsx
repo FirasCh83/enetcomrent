@@ -10,6 +10,7 @@ function Home({
   setTypeFilter,
   filteredApartments
 }) {
+  
   return (
     <>
       <Navbar/>

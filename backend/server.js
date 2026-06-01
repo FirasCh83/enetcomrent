@@ -77,10 +77,20 @@ app.get("/create", async (req, res) => {
 })
 
 
-app.delete("/apartments/:id", async (req, res) => {
-  console.log(req.params.id)
+app.delete(
+  "/apartments/:id",
+  verifyToken,
+  async (req, res) => {
 
   try {
+
+    const apartment =
+  await Apartment.findById(req.params.id)
+  if (
+  apartment.ownerId.toString()
+  !==
+  req.user.id
+) 
 
     await Apartment.findByIdAndDelete(req.params.id)
 
@@ -98,9 +108,26 @@ app.delete("/apartments/:id", async (req, res) => {
 
 })
 
-app.put("/apartments/:id", async (req, res) => {
+app.put(
+  "/apartments/:id",
+  verifyToken,
+  async (req, res) => {
+    try {
+    const apartment =
+  await Apartment.findById(req.params.id)
+  if (
+  apartment.ownerId.toString()
+  !==
+  req.user.id
+) {
 
-  try {
+  return res.status(403).json({
+    error: "Not authorized"
+  })
+
+}
+
+  
 
     const updatedApartment =
       await Apartment.findByIdAndUpdate(
