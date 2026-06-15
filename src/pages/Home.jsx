@@ -10,7 +10,9 @@ function Home({
   setTypeFilter,
   filteredApartments
 }) {
-  
+  const user = JSON.parse(
+  localStorage.getItem("user")
+)
   return (
     <>
       <Navbar/>
