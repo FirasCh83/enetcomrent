@@ -30,6 +30,25 @@ app.get("/", (req, res) => {
   res.send("Enetcomrent backend is running 😄")
 })
 
+app.get("/apartments", async (req, res) => {
+
+  try {
+
+    const apartments =
+      await Apartment.find()
+
+    res.json(apartments)
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: "Failed to fetch apartments"
+    })
+
+  }
+
+})
+
 
 app.post(
   "/apartments",
