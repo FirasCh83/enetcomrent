@@ -1,7 +1,53 @@
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 function StudentSignup() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const handleSubmit = async (e) => {
 
+  e.preventDefault()
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:5000/student/signup",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+
+      alert(data.error)
+
+      return
+
+    }
+
+    alert("Student account created 😄")
+
+  } catch (error) {
+
+    console.log(error)
+
+  }
+
+}
+  
   return (
 
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6">
@@ -16,24 +62,32 @@ function StudentSignup() {
           Join Enetcomrent today 😄
         </p>
 
-        <form className="space-y-6">
+        <form
+         onSubmit={handleSubmit}
+         className="space-y-6">
 
           <input
             type="text"
             placeholder="Full name"
             className="w-full p-4 rounded-2xl border"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <input
             type="email"
             placeholder="Email address"
             className="w-full p-4 rounded-2xl border"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
             className="w-full p-4 rounded-2xl border"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button
@@ -49,7 +103,7 @@ function StudentSignup() {
           Already have an account?{" "}
 
           <Link
-            to="/login"
+            to="/student-login"
             className="text-blue-600 font-semibold"
           >
             Login

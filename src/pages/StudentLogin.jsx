@@ -1,6 +1,69 @@
-import { Link } from "react-router-dom"
+import {
+  Link,
+  useNavigate
+} from "react-router-dom"
+
+import { useState } from "react"
 
 function StudentLogin() {
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const handleSubmit = async (e) => {
+
+  e.preventDefault()
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:5000/student/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+
+      alert(data.error)
+
+      return
+
+    }
+
+    localStorage.setItem(
+      "token",
+      data.token
+    )
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(data.user)
+    )
+
+    alert("Student login successful 😄")
+
+    navigate("/")
+
+  } catch (error) {
+
+    console.log(error)
+
+  }
+
+}
+
 
   return (
 
@@ -16,21 +79,25 @@ function StudentLogin() {
           Login to your account
         </p>
 
-        <form className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
 
           <input
             type="email"
             placeholder="Email address"
             className="w-full p-4 rounded-2xl border"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
             className="w-full p-4 rounded-2xl border"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button
+          <button 
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold transition"
           >
             Login
@@ -43,7 +110,7 @@ function StudentLogin() {
           Don't have an account?{" "}
 
           <Link
-            to="/signup"
+            to="/student-signup"
             className="text-blue-600 font-semibold"
           >
             Sign Up

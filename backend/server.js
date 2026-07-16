@@ -339,6 +339,175 @@ app.post("/owner/login", async (req, res) => {
 
 })
 
+app.post("/student/signup", async (req, res) => {
+
+  try {
+
+    const {
+      name,
+      email,
+      password
+    } = req.body
+
+    // CHECK IF EMAIL EXISTS
+    const existingUser =
+      await User.findOne({ email })
+
+    if (existingUser) {
+
+      return res.status(400).json({
+        error: "Email already exists"
+      })
+
+    }
+
+    // VALIDATION
+    if (!name || !email || !password) {
+
+      return res.status(400).json({
+        error: "All fields are required"
+      })
+
+    }
+
+    if (password.length < 6) {
+
+      return res.status(400).json({
+        error: "Password must be at least 6 characters"
+      })
+
+    }
+
+    if (!email.includes("@")) {
+
+      return res.status(400).json({
+        error: "Invalid email"
+      })
+
+    }
+
+    // HASH PASSWORD
+    const hashedPassword =
+      await bcrypt.hash(password, 10)
+
+    // CREATE STUDENT
+    const newUser = new User({
+
+      name,
+      email,
+
+      password: hashedPassword,
+
+      role: "student"
+
+    })
+
+    await newUser.save()
+
+    res.status(201).json({
+
+      message: "Student account created 😄"
+
+    })
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+
+      error: "Server error"
+
+    })
+
+  }
+
+})
+
+app.post("/student/login", async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body
+
+    const user = await User.findOne({ email })
+
+    if (!user) {
+
+      return res.status(400).json({
+        error: "User not found"
+      })
+
+    }
+
+    if (user.role !== "student") {
+
+      return res.status(403).json({
+        error: "This account is not a student account"
+      })
+
+    }
+
+    const isMatch =
+      await bcrypt.compare(
+        password,
+        user.password
+      )
+
+    if (!isMatch) {
+
+      return res.status(400).json({
+        error: "Invalid password"
+      })
+
+    }
+
+    const token = jwt.sign(
+
+      {
+        id: user._id,
+        role: user.role
+      },
+
+      process.env.JWT_SECRET,
+
+      {
+        expiresIn: "7d"
+      }
+
+    )
+
+    res.json({
+
+      message: "Student login successful 😄",
+
+      token,
+
+      user: {
+
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+
+      }
+
+    })
+
+  } catch (error) {
+
+    console.log(error)
+
+    res.status(500).json({
+
+      error: "Server error"
+
+    })
+
+  }
+
+})
+
 app.get(
   "/owner/apartments",
   verifyToken,
